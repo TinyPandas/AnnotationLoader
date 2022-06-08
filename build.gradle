@@ -1,0 +1,14 @@
+plugins {
+    id 'java-library'
+}
+
+group 'org.tinypandas'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.reflections:reflections:0.10.2'
+}
