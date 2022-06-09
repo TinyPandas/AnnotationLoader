@@ -1,4 +1,13 @@
+[discord-invite]: https://discord.gg/w3BmYhkKUP
+[discord-shield]: https://discord.com/api/guilds/546033322401464320/widget.png
+[license]: https://github.com/TinyPandas/AnnotationLoader/tree/master/LICENSE
+[license-shield]: https://img.shields.io/badge/License-GNUv3-blue
+
 # AnnotationLoader
+[![](https://jitpack.io/v/TinyPandas/AnnotationLoader.svg)](https://jitpack.io/#TinyPandas/AnnotationLoader)
+[![discord-shield][]][discord-invite]
+[![license-shield][]][license]
+
 AnnotationLoader is a library intended to bring runtime class loading with ease.
 The idea came about when creating Discord bots, and I kept forgetting to add new
 commands to a sort of command handler class, leading to additional builds of the
