@@ -5,7 +5,6 @@ plugins {
 
 group 'org.tinypandas'
 version '1.0.1'
-sourceCompatibility = 1.17
 
 repositories {
     mavenCentral()
