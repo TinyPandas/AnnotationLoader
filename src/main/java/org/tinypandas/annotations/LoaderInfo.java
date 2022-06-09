@@ -5,6 +5,9 @@ import org.tinypandas.utility.Loader;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+/**
+ * Annotation used to define Loader information on a Class.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LoaderInfo {
     /**

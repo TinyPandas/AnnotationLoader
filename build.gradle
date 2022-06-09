@@ -1,5 +1,6 @@
 plugins {
     id 'java-library'
+    id 'maven-publish'
 }
 
 group 'org.tinypandas'
@@ -11,4 +12,34 @@ repositories {
 
 dependencies {
     implementation 'org.reflections:reflections:0.10.2'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    archiveClassifier.set("sources")
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    archiveClassifier.set("javadoc")
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'org.tinypandas'
+            artifactId = 'AnnotationLoader'
+            version = '1.0'
+
+            from components.java
+            artifact javadocJar
+            artifact sourcesJar
+        }
+    }
+    repositories {
+        maven {
+            name = "AnnotationLoader"
+            url = layout.buildDirectory.dir("repo")
+        }
+    }
 }
