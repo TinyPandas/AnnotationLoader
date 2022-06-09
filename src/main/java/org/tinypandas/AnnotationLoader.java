@@ -7,6 +7,7 @@ import org.tinypandas.annotations.LoaderInfo;
 import org.tinypandas.annotations.RegisterOnStart;
 import org.tinypandas.utility.Loader;
 
+import java.io.File;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,18 +20,14 @@ import java.util.stream.Collectors;
  */
 public class AnnotationLoader {
 
-    private final Logger logger = LoggerFactory.getLogger(AnnotationLoader.class.getName());
-    private final Reflections reflections;
-    private final Map<String, Loader> loaders = new HashMap<>();
+    private static final Logger logger = LoggerFactory.getLogger(AnnotationLoader.class.getName());
+    private static final Map<String, Loader> loaders = new HashMap<>();
 
-    /**
-     * Constructs a new Instance of AnnotationLoader.
-     *
-     * This constructor also gathers all classes marked with `@LoaderInfo(isLoader = true)`.
-     * @param packageName - The top level package to reflect on.
-     */
-    public AnnotationLoader(String packageName) {
-        this.reflections = new Reflections(packageName);
+    private static Reflections reflections;
+    private static String path = "";
+
+    static {
+        getTopLevelPackage("src/");
 
         Set<Class<?>> loaderClasses = reflections.getTypesAnnotatedWith(LoaderInfo.class);
         logger.info("Registering " + loaderClasses.size() + " loaders.");
@@ -49,15 +46,36 @@ public class AnnotationLoader {
                 logger.info("Registered loader: " + loader + ".");
             }
         });
+
+        onStartRegister();
+    }
+
+    private static void getTopLevelPackage(String directoryName) {
+        if (directoryName.length() > 4)
+            path = directoryName.substring(directoryName.indexOf("\\src") + 1).replaceAll("\\\\", "/");
+        File dir = new File(directoryName);
+        File[] fList = dir.listFiles();
+        if (fList == null) return;
+        for (File file : fList) {
+            if (AnnotationLoader.reflections != null) return;
+            if (file.isFile()) {
+                if (path.contains("src/main/java/")) {
+                    path = path.substring("src/main/java/".length()).replaceAll("/", ".");
+                }
+                AnnotationLoader.reflections = new Reflections(path);
+            } else if (file.isDirectory()) {
+                getTopLevelPackage(file.getAbsolutePath());
+            }
+        }
     }
 
     /**
      * Gathers all classes annotated with `@RegisterOnStart` and attempts to
      * register them using their defined loader.
      */
-    public void onStartRegister() {
+    public static void onStartRegister() {
         Set<Class<?>> onStartClasses = reflections.getTypesAnnotatedWith(RegisterOnStart.class).stream()
-                .filter(clazz -> clazz.getPackageName().contains("annotations"))
+                .filter(Class::isAnnotation)
                 .collect(Collectors.toSet());
         logger.info("Annotations found for onStart registration: " + onStartClasses.size());
         onStartClasses.forEach(onStartClass -> {
