@@ -4,7 +4,8 @@ plugins {
 }
 
 group 'org.tinypandas'
-version '1.0'
+version '1.0.1'
+sourceCompatibility = 1.17
 
 repositories {
     mavenCentral()
@@ -27,9 +28,9 @@ task javadocJar(type: Jar) {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            groupId = 'org.tinypandas'
-            artifactId = 'AnnotationLoader'
-            version = '1.0'
+            groupId = project.group as String
+            artifactId = project.name
+            version = project.version as String
 
             from components.java
             artifact javadocJar
