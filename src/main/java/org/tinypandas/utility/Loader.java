@@ -2,13 +2,16 @@ package org.tinypandas.utility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tinypandas.annotations.LoaderInfo;
+
+import java.util.Arrays;
 
 /**
  * Loader implementation for custom Loader objects.
  */
 public abstract class Loader {
 
-    private static final Logger logger = LoggerFactory.getLogger(Loader.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger("DefaultLoader");
 
     /**
      * Method used to instantiated provided class as instance of T.
@@ -24,6 +27,7 @@ public abstract class Loader {
      * The DefaultLoader implementation. This method will construct a class
      * per normal means. (ex: `Object object = new Object();`)
      */
+    @LoaderInfo(isLoader = true)
     public static class DefaultLoader extends Loader {
         public <T> T registerClass(Class<T> clazz) {
             logger.info("Registering: " + clazz);

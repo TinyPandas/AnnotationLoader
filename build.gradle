@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'org.tinypandas'
-version '1.1'
+version '2.0.1'
 
 repositories {
     mavenCentral()
@@ -12,6 +12,7 @@ repositories {
 
 dependencies {
     implementation 'org.reflections:reflections:0.10.2'
+    implementation 'ch.qos.logback:logback-classic:1.2.11'
 }
 
 task sourcesJar(type: Jar) {
